@@ -12,11 +12,12 @@ The ingress controller gets expossed as a normal kubernetes service load balance
 kubectl get svc istio-ingress -n istio-system -o yaml
 ```
 
-Because the Istio Ingress Controller is an Envoy Proxy you can inspect it using the admin routes.  First find the name of the istio ingress proxy:
+Because the Istio Ingress Controller is an Envoy Proxy you can inspect it using the admin routes.  First find the name of the istio ingress proxy and save it to a local variable:
 
 ```sh
 kubectl get po -n istio-system
-kubectl port-forward $(kubectl get pods -n istio-system | grep  istio-ingress | awk '{print $1}') -n istio-system 
+ISTIO_INGRESS=$(kubectl get pods -n istio-system | grep  istio-ingress | awk '{print $1}')
+kubectl port-forward $ISTIO_INGRESS  -n istio-system 
 15000:15000
 ```
 
@@ -37,7 +38,7 @@ See the [admin docs](https://www.envoyproxy.io/docs/envoy/v1.5.0/operations/admi
 Also it can be helpful to look at the log files of the istio ingress controller to see what request is being routed.  First find the ingress pod and the output the log files:
 
 ```sh
-kubectl logs istio-ingress-d8d5fdc86-69jtx -n istio-system
+kubectl logs $ISTIO_INGRESS -n istio-system
 ```
 
 #### Configure Guess Book Ingress Routes with the Istio Ingress Controller
