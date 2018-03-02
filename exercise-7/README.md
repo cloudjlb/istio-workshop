@@ -16,7 +16,8 @@ Because the Istio Ingress Controller is an Envoy Proxy you can inspect it using 
 
 ```sh
 kubectl get po -n istio-system
-kubectl port-forward istio-ingress-d8d5fdc86-69jtx -n istio-system 15000:15000
+kubectl port-forward $(kubectl get pods -n istio-system | grep  istio-ingress | awk '{print $1}') -n istio-system 
+15000:15000
 ```
 
 You can view the statistics, listeners, routes, clusters and server info for the envoy proxy by forwarding the local port:
